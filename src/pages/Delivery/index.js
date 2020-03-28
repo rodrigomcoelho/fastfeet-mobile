@@ -10,38 +10,78 @@ import { signOut } from '~/store/modules/auth/actions';
 import DeliveryItem from '~/components/DeliveryItem';
 
 import { Container, Header, Avatar, UserInfo, Welcome, UserName,
-  ActionContainer, DeliveryText, ActionOption, ContentList } from './styles';
+  ActionContainer, DeliveryText, ActionOption, ContentList, Loading } from './styles';
 
-export default function Delivery() {
+export default function Delivery({ navigation }) {
   const user =  useSelector(state => state.auth.user);
   const dispatch = useDispatch();
 
+  const [shouldRun, setShouldRun] = useState(true);
   const [pendingSelected, setPendingSelected] = useState(true);
   const [deliveries, setDeliveries] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  async function fetchData(pageNumber = page, shouldReset = false) {
+    console.tron.log({
+      shouldRun,
+      shouldReset,
+      finished: !pendingSelected,
+      page: pageNumber,
+      limit: 5,
+    });
+    if (!shouldRun) return;
+    setLoading(true);
+
+    const { data } = await api.get(`/deliverymen/${user.id}/deliveries`, {
+      params: {
+        finished: !pendingSelected,
+        page: pageNumber,
+        limit: 20,
+      }
+    });
+
+    setLoading(false);
+    if (data.length > 0)
+    {
+      setDeliveries(shouldReset ? data : [...deliveries, ...data]);
+      setPage(pageNumber + 1);
+    }
+    else
+    {
+      setShouldRun(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const { data } = await api.get(`/deliverymen/${user.id}/deliveries`, {
-        params: {
-          finished: !pendingSelected
-        }
-      });
-      setDeliveries(data);
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function refresh() {
+      await fetchData(1, true);
     }
 
-    fetchData();
-  }, [user.id, pendingSelected]);
+    refresh();
+  }, [pendingSelected]);
 
+  async function handleStatus(bool) {
+    if (pendingSelected !== bool)
+    {
+      setShouldRun(true);
+      setPendingSelected(bool);
+    }
+  }
 
   return (<Container>
     <Header>
       <Avatar source={{uri:
         user.avatar ? user.avatar.url :
-        'http://api.adorable.io/avatar/50/userName.png'
+        `http://api.adorable.io/avatar/50/${user.name}.png`
         }}></Avatar>
       <UserInfo>
         <Welcome>Bem vindo de volta,</Welcome>
-        <UserName>Gaspar Antunes</UserName>
+        <UserName>{user.name}</UserName>
       </UserInfo>
       <TouchableOpacity onPress={() => dispatch(signOut())} >
         <Icon name="exit-to-app" size={18} color="#E74040"></Icon>
@@ -52,11 +92,11 @@ export default function Delivery() {
 
       <DeliveryText>Entregas</DeliveryText>
 
-      <TouchableOpacity onPress={() => setPendingSelected(true)}>
+      <TouchableOpacity onPress={() => handleStatus(true)}>
         <ActionOption show={pendingSelected}>Pendentes</ActionOption>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => setPendingSelected(false)}>
+      <TouchableOpacity onPress={() => handleStatus(false)}>
         <ActionOption show={!pendingSelected}>Entregues</ActionOption>
       </TouchableOpacity>
 
@@ -65,7 +105,10 @@ export default function Delivery() {
     <ContentList
       data={deliveries}
       keyExtractor={item => String(item.id)}
-      renderItem={({ item }) => (<DeliveryItem data={item}/>) }
+      ListFooterComponent={loading && <Loading />}
+      renderItem={({ item }) => (<DeliveryItem data={item} onClick={() => {}}/>) }
+      onEndReached={() => fetchData()}
+      onEndReachedThreshold={0.1}
     />
   </Container>);
 }

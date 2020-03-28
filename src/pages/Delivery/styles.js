@@ -64,3 +64,10 @@ export const ContentList = styled.FlatList.attrs({
 })`
   margin-top: 10px;
 `;
+
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: '#999'
+})`
+  margin: 30px 0;
+`;

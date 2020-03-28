@@ -10,7 +10,7 @@ import ProgressBar from '../ProgressBar';
 import { Container, Status, DeliveryTitle, DeliveryNumber, Details, DetailsContent,
   DatailsDate, DetailsInfo, DetailsView } from './styles';
 
-export default function DeliveryItem({ data }) {
+export default function DeliveryItem({ data, onClick }) {
   const startDate = useMemo(() =>
     format(parseISO(data.createdAt), 'dd/MM/yyyy', { locale: ptBR })
   ,[data.createdAt]);
@@ -39,7 +39,7 @@ export default function DeliveryItem({ data }) {
             <DetailsInfo>{data.recipient.city}</DetailsInfo>
           </View>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onClick}>
             <DetailsView>Ver detalhes</DetailsView>
           </TouchableOpacity>
 
