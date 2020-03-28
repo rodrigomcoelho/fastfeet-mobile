@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Image } from 'react-native';
-import logo from '~/assets/fast-feet.svg';
 
 import { signInRequest } from '~/store/modules/auth/actions';
 
-import { Container, Input, Button } from './styles';
+import Input from '~/components/Input';
+
+import { Container, Logo, Button } from './styles';
 
 export default function SignIn() {
 
@@ -21,7 +21,7 @@ export default function SignIn() {
 
   return (
     <Container>
-      <Image defaultSource={logo}></Image>
+      <Logo />
       <Input
         placeholder="Informe seu ID de cadastro"
         value={id}

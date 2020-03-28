@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import OriginalButton from '~/components/Button';
 import OriginalInput from '~/components/Input';
+import LogoSVG from '~/assets/fast-feet.svg';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -10,16 +11,15 @@ export const Container = styled.SafeAreaView`
   justify-content: center;
 `;
 
-export const Image = styled.Image`
-  height: 48px;
-  width: 48px;
-  border: 1px solid #fff;
+export const Logo = styled(LogoSVG).attrs({
+  width: 244,
+  height: 48,
+})`
+  align-self: center;
+  margin-bottom: 37px;
 `;
 
 export const Button = styled(OriginalButton)`
   background-color: #82BF18;
   margin-top: 16px;
-`;
-
-export const Input = styled(OriginalInput)`
 `;
