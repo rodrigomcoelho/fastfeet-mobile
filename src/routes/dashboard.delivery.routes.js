@@ -10,11 +10,51 @@ const Stack = createStackNavigator();
 
 export default function DeliveryStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerTransparent: true, headerTitle: '' }} >
-      <Stack.Screen name="Delivery" component={Delivery} />
-      <Stack.Screen name="DeliveryDetail" component={DeliveryDetail} />
-      <Stack.Screen name="ReportProblem" component={ReportProblem} />
-      <Stack.Screen name="DeliViewProblemvery" component={ViewProblem} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Delivery"
+        component={Delivery}
+        options={{
+          title: '',
+          headerTransparent: true,
+        }}
+      />
+
+      <Stack.Screen
+        name="DeliveryDetail"
+        component={DeliveryDetail}
+        options={{
+          title: 'Detalhes da encomenda',
+          headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#7D40E7',
+          }
+        }}
+      />
+
+      <Stack.Screen
+        name="ReportProblem"
+        component={ReportProblem}
+        options={{
+          title: 'Informar problema',
+          headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#7D40E7',
+          }
+        }}
+      />
+
+      <Stack.Screen
+        name="DeliViewProblemvery"
+        component={ViewProblem}
+        options={{
+          title: 'Visualizar problemas',
+          headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#7D40E7',
+          }
+        }}
+      />
     </Stack.Navigator>
   );
 }

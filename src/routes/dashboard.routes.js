@@ -25,8 +25,23 @@ export default function Dashboard() {
       fontSize: 12,
     }
   }}>
-    <Tab.Screen name="DeliveryStack" component={DeliveryStack} options={{ tabBarIcon: DeliveryIcon}}></Tab.Screen>
-    <Tab.Screen name="Profile" component={Profile} options={{ tabBarIcon: ProfileIcon}}></Tab.Screen>
+    <Tab.Screen
+      name="DeliveryStack"
+      component={DeliveryStack}
+      options={{
+        tabBarIcon: DeliveryIcon,
+        title: 'Entregas'
+      }}
+    />
+
+    <Tab.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        tabBarIcon: ProfileIcon,
+        title: 'Meu Perfil'
+      }}
+      />
   </Tab.Navigator>
   );
 }

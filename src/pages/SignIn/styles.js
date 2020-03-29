@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import OriginalButton from '~/components/Button';
-import OriginalInput from '~/components/Input';
 import LogoSVG from '~/assets/fast-feet.svg';
 
 export const Container = styled.SafeAreaView`

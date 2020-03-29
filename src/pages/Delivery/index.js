@@ -23,13 +23,7 @@ export default function Delivery({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   async function fetchData(pageNumber = page, shouldReset = false) {
-    console.tron.log({
-      shouldRun,
-      shouldReset,
-      finished: !pendingSelected,
-      page: pageNumber,
-      limit: 5,
-    });
+
     if (!shouldRun) return;
     setLoading(true);
 
@@ -106,7 +100,10 @@ export default function Delivery({ navigation }) {
       data={deliveries}
       keyExtractor={item => String(item.id)}
       ListFooterComponent={loading && <Loading />}
-      renderItem={({ item }) => (<DeliveryItem data={item} onClick={() => {}}/>) }
+      renderItem={({ item }) => (
+        <DeliveryItem data={item} onClick={() => navigation.navigate('DeliveryDetail', {
+            deliveryId: item.id
+      })}/>) }
       onEndReached={() => fetchData()}
       onEndReachedThreshold={0.1}
     />
