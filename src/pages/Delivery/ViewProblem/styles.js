@@ -36,6 +36,13 @@ export const Date = styled.Text`
   color: #C1C1C1;
 `;
 
+export const ContentList = styled.FlatList.attrs({
+  showsVerticalScrollIndicator: false,
+})`
+  flex: 1;
+  width: 100%;
+`;
+
 export const Block = styled.View`
   margin-right: 20px;
   margin-left: 20px;
@@ -53,3 +60,5 @@ export const Block = styled.View`
   elevation: 1;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 `;
+
+

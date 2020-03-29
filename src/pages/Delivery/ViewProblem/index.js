@@ -1,6 +1,9 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, FlatList } from 'react-native';
+import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import api from '~/services/api';
 
 import {
   Scroll,
@@ -10,6 +13,7 @@ import {
   Block,
   Title,
   Date,
+  ContentList,
 } from './styles';
 
 export default function ViewProblem({ navigation, route }) {
@@ -22,30 +26,39 @@ export default function ViewProblem({ navigation, route }) {
   });
 
   const { deliveryId } = route.params;
+  const [problems, setProblems] = useState([])
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await api.get(`/deliveries/${deliveryId}/problems`);
+      if (data)
+        setProblems(data.map(d => ({
+          ...d,
+          date: format(parseISO(d.createdAt), 'dd/MM/yyyy' )
+        })));
+    }
+
+    if (deliveryId) fetchData();
+  }, [deliveryId]);
+
   return (
-    <Scroll>
-      <Container>
+    <Container>
 
-        <BackgroundHeader />
+      <BackgroundHeader />
 
-        <WindowTitle>Encomenda {deliveryId}</WindowTitle>
+      <WindowTitle>Encomenda {deliveryId}</WindowTitle>
 
-        <Block>
-          <Title>Destinataŕio Ausente</Title>
-          <Date>14/01/2020</Date>
-        </Block>
+      <ContentList
+        data={problems}
+        keyExtractor={item => String(item.id)}
+        renderItem={({ item }) => (
+          <Block>
+            <Title>{item.description}</Title>
+            <Date>{item.date}</Date>
+          </Block>
+        )}
+      />
 
-        <Block>
-          <Title>Destinataŕio Ausente</Title>
-          <Date>14/01/2020</Date>
-        </Block>
-
-        <Block>
-          <Title>Destinataŕio Ausente</Title>
-          <Date>14/01/2020</Date>
-        </Block>
-
-      </Container>
-    </Scroll>
+    </Container>
   );
 }
